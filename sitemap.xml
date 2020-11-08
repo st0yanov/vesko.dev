@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      <urlset xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+      xmlns:xhtml="http://www.w3.org/1999/xhtml">
+      <url><loc>https://www.vesko.dev/404</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev/about</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev/posts/pushing-docker-images-to-a-private-registry-with-docker-compose</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev/posts/self-hosting-a-mail-server-in-2020</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev/privacy-policy</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url><url><loc>https://www.vesko.dev/terms-of-service</loc>
+                
+                
+                
+                <lastmod>2020-11-08</lastmod>
+                </url></urlset>
