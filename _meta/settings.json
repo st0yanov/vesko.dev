@@ -1,0 +1,26 @@
+{
+  "blogger_name": "Veselin Stoyanov",
+  "blogger_description": "Welcome to my personal website about programming, technology, indie hacking and more!",
+  "copyright_text": "© All rights reserved.",
+  "meta_keywords": "Veselin Stoyanov,Veselin,Stoyanov,Веселин Стоянов,Веселин,Стоянов,personal website,blog",
+  "pagination_size": 5,
+  "blogger_photo": "/assets/images/avatar.png",
+  "blogger_social_contacts": [
+    {
+      "icon_prefix": "fab",
+      "icon_name": "github-alt",
+      "link": "https://github.com/veskoy"
+    },
+    {
+      "icon_prefix": "fab",
+      "icon_name": "linkedin",
+      "link": "https://www.linkedin.com/in/stoyanovv/"
+    },
+    {
+      "icon_prefix": "fas",
+      "icon_name": "at",
+      "link": "mailto:me@vesko.dev"
+    }
+  ],
+  "default_social_image": "/assets/images/default_social_image.png"
+}

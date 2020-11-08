@@ -1,0 +1,6 @@
+node_modules
+out
+public
+.next
+_next
+*.mdx

@@ -1,0 +1,99 @@
+---
+slug: pushing-docker-images-to-a-private-registry-with-docker-compose
+title: Pushing Docker images to a private registry with Docker Compose
+description: Recently I was looking for a way to push services’ images of a
+  Docker Compose project to a private registry. In this article I’m going to
+  save you some guesswork as the process is a bit ambiguous.
+date_published: 2019-05-17T21:00:00.000Z
+date_modified: 2020-11-03T20:56:05.433Z
+seo_keywords:
+  - docker
+  - docker compose
+  - docker image
+  - private docker registry
+  - docker registry
+seo_image: /assets/images/pushing_docker_images_to_a_private_registry_with_docker_compose.png
+---
+
+![](/assets/images/network_cables.jpg 'Network Cables')
+
+Recently I was looking for a way to push services’ images of a Docker Compose project to a private registry. In this article I’m going to save you some guesswork as the process is a bit ambiguous.
+
+Before we go any further let’s first set up the stage.
+We have a simple **docker-compose.yml** file with the following contents:
+
+```bash
+version: '3'
+
+services:
+  myapp:
+    build: ./services/myapp
+```
+
+I want to build the image and push it to my private Docker registry.
+
+```bash
+docker-compose build
+```
+
+So far so good. Everything builds well. I decide to check my local images:
+
+```bash
+docker images
+```
+
+And the first issue I notice is the bad naming of my image:
+`“myprojectname_myapp latest”`
+
+Easy fix — if you specify image as well as build configuration options, docker-compose will build the image with the specified image name and tag, [as described in the docs](https://docs.docker.com/compose/compose-file/#build):
+
+```bash
+version: '3'
+
+services:
+  myapp:
+    image: myproject/myapp:latest
+    build: ./services/myapp
+```
+
+Now my image has appropriate naming and I want to push it. With the current setup, however, `docker-compose push` will try to push the project’s images to the Docker Hub registry. I don’t want this to happen.
+
+At first glance [the compose file reference](https://docs.docker.com/compose/compose-file/) doesn’t provide neither configuration nor information on how to push images to a private registry.
+
+> If y*ou* want to push an image to a private registry you need to [follow those instructions](https://docs.docker.com/engine/reference/commandline/push/#push-a-new-image-to-a-registry):\
+>
+> 1. `docker tag myproject/myapp:latest my-registry-host:5000/myproject/myapp:latest`\
+>
+> 2. `docker push my-registry-host:5000/myproject/myapp:latest`
+
+There are some guides on the Internet suggesting automating those steps with a script but I don’t like this solution as I want to use the native tooling. A few minutes later I arrived at [the docker-compose push documentation page](https://docs.docker.com/compose/reference/push/) which includes a nice example.
+
+> It looks like the image service configuration option follows the same notation as the example above:
+
+```bash
+version: '3'
+
+services:
+  myapp:
+    image: my-registry-host:5000/myproject/myapp:latest
+    build: ./services/myapp
+```
+
+Now when I execute `docker-compose push` my image gets pushed to my private image registry. There is something that still annoys me though — if I decide to change the registry, I need to edit the image configuration option of all described services.
+
+> For this reason I like to extract the registry host as an environment variable:
+
+```bash
+REGISTRY_HOST=my-registry-host:5000
+```
+
+```bash
+version: '3'
+
+services:
+  myapp:
+    image: ${REGISTRY_HOST}/myproject/myapp:latest
+    build: ./services/myapp
+```
+
+Congratulations! Now you will be able to build and distribute your project’s images by only using the native tooling provided by Docker and Docker Compose.

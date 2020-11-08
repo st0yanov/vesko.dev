@@ -1,0 +1,87 @@
+---
+slug: self-hosting-a-mail-server-in-2020
+title: Self-hosting a mail server in 2020
+description: You have some sort of application that has to deliver email. You
+  are also a tech savvy person who believes in the “email is decentralised”
+  mantra so you decide to self-host a mail server yourself. Not so fast. In the
+  following paragraphs I will try to summarise what I have learnt and what it is
+  like to self-host a mail server in 2020.
+date_published: 2019-02-23T22:00:00.000Z
+date_modified: 2020-11-02T22:09:36.229Z
+seo_keywords:
+  - self hosting
+  - mail server
+seo_image: /assets/images/self_hosting_mail_server.png
+---
+
+![](/assets/images/mailbox.jpg 'Mailbox Cover')
+
+You have some sort of application that has to deliver email. You are also a tech savvy person who believes in the “email is decentralised” mantra so you decide to self-host a mail server yourself. Not so fast. In the following paragraphs I will try to summarise what I have learnt and what it is like to self-host a mail server in 2020.
+
+It all started a month ago when I launched a small community-driven tech newsletter. The newsletter application consisted of a simple static website and a simple backend for dealing with subscriptions and email deliveries. Deploying to production I had to configure the application’s SMTP settings so I googled about the most recent trends.
+
+Almost every article I read stated:
+
+> Self-hosting a mail server is hard, better use some Cloud/SaaS solution.
+
+Why is it hard though? No arguments on that. I decided to give it a shot.
+
+After a short research I started a Postfix instance in a docker container. A few hours later I successfully configured my domain to work with the SMTP server and sent a test email. It arrived in the SPAM folder of my Gmail account.
+
+> Lesson #1: Running your own mail server is easy. What is hard is to configure it correctly.
+
+The first thing I instantly noticed was that my email was delivered unencrypted.
+
+![](/assets/images/no_encryption.png 'No Encryption')
+
+Gmail warns me that the email was not encrypted.
+
+I quickly fixed that with a certificate provided by Let’s Encrypt. There are a lot of step-by-step tutorials on the topic. Now my emails are encrypted but are still classified as Spam.
+
+I decided to quit the guesswork and a few minutes later I arrived at [this helpful page](https://support.google.com/mail/answer/81126?hl=en). Here is a quick checklist of what you need to do in order to pass the Spam classification when delivering to Gmail:
+
+1. Static IP
+2. Reverse DNS on your IP address that points to the domain you use for sending emails
+3. DKIM
+4. SPF
+5. DMARC
+6. Confirmation email before adding to subscription list
+7. Unsubscribe link
+
+1, 6, 7 were already done on my side. I continued with the configuration of my mail server with DKIM, SPF and DMARC. Apart from the DNS records there is also a decent amount of configuration that has to be done on the server-side.
+
+> Lesson #2: A usable mail server needs a carefully designed architecture, maintenance and continuous awareness of the most recent security and content practices.
+
+At this point I decided to check for some community driven mail server (architecture) projects because it requires a lot of knowledge and effort to run a usable mail server. My requirements were the following:
+
+1. Dockerized
+2. Popular and regularly maintained
+3. Well-documented
+4. Easy to setup
+
+I quickly arrived at the following solutions:
+
+1. [Mail-in-a-Box](https://mailinabox.email/) — it isn’t Dockerized and you need a dedicated server or VM in order not to pollute your environment with whatnot. It might be easy to run in a custom docker container but I prefer an officially supported solution.
+2. [Mailu](https://mailu.io/) — it is Dockerized and well-documented but in my opinion not easy to setup. I expect a docker-compose up to be enough so I can check up a demo of the project. After some issues with networking and certificates I decided to move on.
+3. [Mailcow](https://mailcow.email/) — Dockerized, popular, well-documented and easy to install. I managed to get up and running in less than 30 minutes. The project provides a neat admin UI, as well as a nice looking mailboxes for your domain accounts. Mailcow also guided me how to correctly setup my DNS records. It is just awesome! (P.S. I’m not affiliated in any way with Mailcow)
+
+I was ready to send another test email. Fingers crossed — BOOM! My email arrived at the Spam folder once again. The only thing I hadn’t done from the checklist was the Reverse DNS. My ISP refused to add a Reverse DNS record to my IP address that points to my domain. I was compliant with everything but this and there was nothing I could do about it.
+
+> At this point I decided to follow the recommendation to just use some cloud mail delivery service.
+
+All of them offer a “Free” plan which pretty much is more than enough for any small project. You can start delivering emails in 10 minutes and hurray — they arrive at the Primary folder of your mailbox. Those companies make the hassle of running your own mail server look silly and not worth it. Keep in mind however that you may need to update your application’s Terms of Use and/or Privacy Policy because you are sharing people’s personal data with a third-party service. Also although you are using a “Free” plan you cannot start to deliver with most of the services before providing your debit/credit card details.
+
+I checked out the most popular services and decided to give Amazon SES a try. It worked perfectly. However I quickly realised that I need to use their other cloud services in order to be able not only to send but also to receive emails.
+
+> Lesson #3: Even paid mail transport services have downsides which you need to consider.
+
+I continued digging the self-hosted mail server topic. Let’s assume you even have a Reverse DNS record setup on your IP address. Is there anything else that can stop you? Yes — there is :). Your IP address might be included in one or more Spam blacklists which many email providers take into account when assessing your emails. Most of them incorporate a process for unbanning IP addresses but this might take some time and communication.
+
+Other things to keep in mind when self-hosting a mail server:
+
+- **Your mail server’s IP address is ALWAYS exposed and you cannot do anything about it.** This is the way emails work. If you host you application on the same server even behind Cloudflare or other proxy, you can easily become a victim of a DoS/DDoS attack.
+- Setting up a Spam filter on your mail server can prevent malicious uses of your MTA which can result in your IP address being blacklisted.
+
+> Final lesson: Mail servers are stable. Once you go through all the hassle, you can relax and enjoy your setup.
+
+In conclusion my personal feeling about self-hosting a mail server is positive. Setting up a self-hosted mail server for a volume of a few hundred emails a month is not only an overhead but also will cost more than using some mail service provider. However for big volumes I would definitely walk the extra mile with the self-hosting way.

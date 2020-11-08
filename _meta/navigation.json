@@ -1,0 +1,12 @@
+{
+  "menu_items": [
+    {
+      "title": "Blog",
+      "link": "/"
+    },
+    {
+      "title": "About me",
+      "link": "/about/"
+    }
+  ]
+}
