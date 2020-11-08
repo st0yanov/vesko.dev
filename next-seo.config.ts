@@ -14,10 +14,6 @@ const SEO = {
       name: 'author',
       content: settings.blogger_name,
     },
-    {
-      name: 'google-site-verification',
-      content: '',
-    },
   ],
   openGraph: {
     title: "Veselin Stoyanov's Personal Website",

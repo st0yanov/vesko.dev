@@ -53,16 +53,21 @@ const CookieConsent = () => {
   return (
     <div>
       <Head>
-        <script src="/static/klaro.js" />
+        <script defer src="/static/klaro.js" />
+        <script async type="text/plain" data-type="text/javascript" data-name="googleAnalytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-NMWL75LG5L"></script>
+        <script
+          type="text/plain"
+          data-type="text/javascript"
+          data-name="googleAnalytics"
+          dangerouslySetInnerHTML={{ __html:
+            `window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+  
+            gtag('config', 'G-NMWL75LG5L');`
+          }}>
+        </script>
       </Head>
-
-      <style jsx global>
-        {`
-          a:hover {
-            @apply border-b-0;
-          }
-        `}
-      </style>
     </div>
   );
 };

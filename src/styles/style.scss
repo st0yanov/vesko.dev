@@ -45,3 +45,11 @@ blockquote {
     @apply italic;
   }
 }
+
+div.klaro {
+  a {
+    &:hover {
+      @apply border-b-0;
+    }
+  }
+}
