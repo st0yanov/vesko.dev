@@ -1036,6 +1036,10 @@ blockquote p{
   font-style: italic
 }
 
+div.klaro a:hover{
+  border-bottom-width: 0
+}
+
 code[class*='language-'],pre[class*='language-']{
   color:#f8f8f2;
   background:none;
